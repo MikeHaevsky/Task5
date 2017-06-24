@@ -1,0 +1,88 @@
+﻿@model MVCLayer.Models.OperationsView
+
+@{
+    ViewBag.Title = "Operations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Operations</h2>
+
+
+<form method="get">
+    <div class="form-inline">
+        <label class="control-label">Manager:</label>
+        @Html.DropDownList("manager", Model.Managers as SelectList, htmlAttributes: new { @class = "form-control" })
+        <label class="control-label">Client: </label>
+        @Html.DropDownList("client", Model.Clients as SelectList, htmlAttributes: new { @class = "form-control" })
+        <label class="control-label">Product: </label>
+        @Html.DropDownList("product", Model.Products as SelectList, htmlAttributes: new { @class = "form-control" })
+        <input type="submit" value="Filter" class="btn btn-default" />
+    </div>
+</form>
+
+<div class="well">
+    <h4>Sort by cost</h4>
+    <form method="get">
+        <div class="form-inline">
+            <label class="control-label">from </label>
+            @Html.TextBox("lowCost", Model.LowCost, htmlAttributes: new { @class = "form-control" })
+            <label class="control-label"> to </label>
+            @Html.TextBox("highCost", Model.HighCost, htmlAttributes: new { @class = "form-control" })
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+
+<div class="well">
+    <h4>Find by date</h4>
+    <form method="get">
+        <div class="form-inline">
+            <input type="date" class="form-control" id="date" name="date" />
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <tr>
+        <th>Client</th>
+        <th>Manager</th>
+        <th>Product</th>
+        <th>Date</th>
+        <th>Cost</th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.SomeOperations) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClientNickname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManagerNickname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>
+
+@{
+    if (Model.MatchesNotFound)
+    {
+        <h1><b><i>Matches not found</i></b></h1>
+    }
+}
+
