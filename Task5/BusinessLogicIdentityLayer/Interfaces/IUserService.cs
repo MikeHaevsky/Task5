@@ -12,6 +12,8 @@ namespace BusinessLogicIdentityLayer.Interfaces
     public interface IUserService : IDisposable
     {
         Task<OperationDetails> Create(UserDTO userDto);
+        UserDTO GetUser(string idUser);
+        ICollection<UserDTO> GetUsers();
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);
         Task SetInitialData(UserDTO adminDto, List<string> roles);
     } 

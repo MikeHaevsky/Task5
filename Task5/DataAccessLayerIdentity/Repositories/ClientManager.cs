@@ -23,6 +23,16 @@ namespace DataAccessLayerIdentity.Repositories
             Database.SaveChanges();
         }
 
+        public IEnumerable<ApplicationUser> GetAllUsers()
+        {
+            return Database.Users;
+        }
+
+        public ApplicationUser GetUser(string idUser)
+        {
+            return Database.Users.FirstOrDefault(item => item.Id == idUser);
+        }
+
         public void Dispose()
         {
             Database.Dispose();

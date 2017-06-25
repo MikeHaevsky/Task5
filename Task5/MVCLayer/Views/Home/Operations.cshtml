@@ -1,11 +1,11 @@
-﻿@model MVCLayer.Models.OperationsView
+﻿@model MVCLayer.Models.OperationsViewModel
 
 @{
     ViewBag.Title = "Operations";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Operations</h2>
+<h2>@ViewBag.Title</h2>
 
 
 <form method="get">
@@ -79,10 +79,9 @@
     }
 </table>
 
-@{
-    if (Model.MatchesNotFound)
-    {
-        <h1><b><i>Matches not found</i></b></h1>
-    }
-}
+<h4>
+    <b>
+        <i>@ViewBag.Message</i>
+    </b>
+</h4>
 

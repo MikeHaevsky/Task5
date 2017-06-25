@@ -26,22 +26,43 @@ namespace MVCLayer.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Clients()
         {
             IEnumerable<ClientDTO> clientDTOs = operationService.GetClients();
-            Mapper.Initialize(cfg => cfg.CreateMap<ClientDTO, ClientView>());
-            var clients = Mapper.Map<IEnumerable<ClientDTO>, List<ClientView>>(clientDTOs);
+            Mapper.Initialize(cfg => cfg.CreateMap<ClientDTO, ClientViewModel>());
+            var clients = Mapper.Map<IEnumerable<ClientDTO>, List<ClientViewModel>>(clientDTOs);
             return View(clients);
         }
 
+        [Authorize]
+        public ActionResult Managers()
+        {
+            IEnumerable<ManagerDTO> managerDTOs = operationService.GetManagers();
+            Mapper.Initialize(cfg => cfg.CreateMap<ManagerDTO, ManagerViewModel>());
+            var managers = Mapper.Map<IEnumerable<ManagerDTO>, List<ManagerViewModel>>(managerDTOs);
+            return View(managers);
+        }
+
+        [Authorize]
+        public ActionResult Products()
+        {
+            IEnumerable<ProductDTO> productDTOs = operationService.GetProducts();
+            Mapper.Initialize(cfg => cfg.CreateMap<ProductDTO, ProductViewModel>());
+            var products = Mapper.Map<IEnumerable<ProductDTO>, List<ProductViewModel>>(productDTOs);
+            return View(products);
+        }
+
+        [Authorize]
         public ActionResult Operation()
         {
             IEnumerable<OperationDTO> operationDTOs = operationService.GetOperations();
-            Mapper.Initialize(cfg => cfg.CreateMap<OperationDTO, OperationView>());
-            var operations = Mapper.Map<IEnumerable<OperationDTO>, List<OperationView>>(operationDTOs);
+            Mapper.Initialize(cfg => cfg.CreateMap<OperationDTO, OperationViewModel>());
+            var operations = Mapper.Map<IEnumerable<OperationDTO>, List<OperationViewModel>>(operationDTOs);
             return View(operations);
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult Operations(int? manager, int? client, int? product, int? lowCost, int? highCost, DateTime? date)
         {
@@ -55,7 +76,7 @@ namespace MVCLayer.Controllers
                 }
                 catch
                 {
-                    
+                    ViewBag.Message= ViewBag.Message+"Manager with id="+manager.ToString()+" not found";
                 }
             }
 
@@ -67,7 +88,7 @@ namespace MVCLayer.Controllers
                 }
                 catch
                 {
-                    
+                    ViewBag.Message = ViewBag.Message + "|Client with id=" + client.ToString() + " not found";
                 }
             }
 
@@ -79,11 +100,11 @@ namespace MVCLayer.Controllers
                 }
                 catch
                 {
-                    
+                    ViewBag.Message = ViewBag.Message + "|Product with id=" + product.ToString() + " not found";
                 }
             }
 
-            if (lowCost != null || highCost != null)
+            if (lowCost != null || highCost != null && lowCost < highCost)
             {
                 try
                 {
@@ -91,9 +112,11 @@ namespace MVCLayer.Controllers
                 }
                 catch
                 {
-                    
+                    ViewBag.Message = ViewBag.Message + "|Operations not found from current cost interval " + lowCost.ToString() + "/" + highCost.ToString();
                 }
             }
+            else
+                ViewBag.Message("Low cost is more than high cost");
 
             if (date != null)
             {
@@ -103,12 +126,14 @@ namespace MVCLayer.Controllers
                 }
                 catch
                 {
-                    
+                    ViewBag.Message = ViewBag.Message + "|Operations at " + date.ToString() + " not found";
                 }
             }
+            if (operationDTOs.Count() == 0)
+                ViewBag.Message = ViewBag.Message + "Operations not found";
 
-            Mapper.Initialize(cfg => cfg.CreateMap<OperationDTO, OperationView>());
-            IEnumerable<OperationView> operations = Mapper.Map<IEnumerable<OperationDTO>, List<OperationView>>(operationDTOs);
+            Mapper.Initialize(cfg => cfg.CreateMap<OperationDTO, OperationViewModel>());
+            IEnumerable<OperationViewModel> operations = Mapper.Map<IEnumerable<OperationDTO>, List<OperationViewModel>>(operationDTOs);
 
             List<ManagerDTO> managerDTOs = operationService.GetManagers().ToList();
             managerDTOs.Insert(0, new ManagerDTO { Nickname = "All", Id = 0 });
@@ -119,7 +144,7 @@ namespace MVCLayer.Controllers
             List<ProductDTO> productDTOs = operationService.GetProducts().ToList();
             productDTOs.Insert(0, new ProductDTO { Name = "All", Id = 0 });
 
-            OperationsView opv = new OperationsView
+            OperationsViewModel opv = new OperationsViewModel
             {
                 Managers = new SelectList(managerDTOs, "Id", "Nickname"),
                 Clients = new SelectList(clientDTOs, "Id", "Nickname"),
@@ -127,16 +152,7 @@ namespace MVCLayer.Controllers
                 SomeOperations = operations.ToList()
             };
 
-            opv.MatchesNotFound = (operations == null) ? true : false;
-
             return View(opv);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
         }
 
         public ActionResult Contact()

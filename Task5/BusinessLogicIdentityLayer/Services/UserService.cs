@@ -34,24 +34,22 @@ namespace BusinessLogicIdentityLayer.Services
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
 
                 await Database.UserManager.AddToRoleAsync(user.Id, userDto.Role);
-
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, Address = userDto.Address, Name = userDto.Name };
+                ClientProfile clientProfile = new ClientProfile { Id = user.Id, Email = userDto.Email, Name = userDto.Name, Address=userDto.Address};
 
                 Database.ClientManager.Create(clientProfile);
                 await Database.SaveAsync();
 
-                return new OperationDetails(true, "Registration completed successfully", "");
+                return new OperationDetails(true, "Registration successfull", "");
             }
             else
             {
-                return new OperationDetails(false, "The user already exists", "Email");
+                return new OperationDetails(false, "User with this login already exist", "Email");
             }
         }
 
         public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
         {
             ClaimsIdentity claim = null;
-
             ApplicationUser user = await Database.UserManager.FindAsync(userDto.Email, userDto.Password);
             if (user != null)
                 claim = await Database.UserManager.CreateIdentityAsync(user,
@@ -73,9 +71,42 @@ namespace BusinessLogicIdentityLayer.Services
             await Create(adminDto);
         }
 
+        public UserDTO GetUser(string idUser)
+        {
+            ApplicationUser user = Database.ClientManager.GetUser(idUser);
+            
+            UserDTO userDTO = new UserDTO
+            {
+                Name = user.ClientProfile.Name,
+                Address = user.ClientProfile.Address,
+                Email = user.Email,
+                Role = user.Roles.First(x=>x.UserId==user.Id).ToString()
+            };
+            return userDTO;
+        }
+
+        public ICollection<UserDTO> GetUsers()
+        {
+            IEnumerable<ApplicationUser> users = Database.ClientManager.GetAllUsers().ToList();
+            //IEnumerable<ClientProfile> clients = Database.ClientManager.GetAllUsers();
+            ICollection<UserDTO> userDTOs = new List<UserDTO>();
+            foreach (ApplicationUser user in users)
+            {
+                UserDTO userDTO = new UserDTO
+                {
+                    UserName = user.ClientProfile.Name,
+                    Address = user.ClientProfile.Address,
+                    Email = user.Email,
+                    Role = Database.RoleManager.Roles.FirstOrDefault(x=>x.Id==user.Id).ToString()
+                };
+                userDTOs.Add(userDTO);
+            }
+            return userDTOs;
+        }
+
         public void Dispose()
         {
             Database.Dispose();
         }
-    }   
+    }
 }

@@ -1,0 +1,16 @@
+﻿<ul class="nav navbar-nav">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+            Information
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Managers", "Managers", "Home")</li>
+            <li>@Html.ActionLink("Clients", "Clients", "Home")</li>
+            <li>@Html.ActionLink("Products", "Products", "Home")</li>
+            <li>@Html.ActionLink("Operations", "Operations", "Home")</li>
+        </ul>
+    </li>
+    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+</ul>

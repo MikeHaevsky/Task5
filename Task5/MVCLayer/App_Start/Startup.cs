@@ -11,13 +11,12 @@ using System.Web;
 
 namespace MVCLayer.App_Start
 {
-    //[assembly: OwinStartup(typeof(MVCLayer.App_Start.Startup))]
+    //[assembly: OwinStartup(typeof(MVCLayer.Startup))]
     public class Startup
     {
         IServiceCreator serviceCreator = new ServiceCreator();
         public void Configuration(IAppBuilder app)
         {
-            //app.MapSignalR();
             app.CreatePerOwinContext<IUserService>(CreateUserService);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -28,7 +27,7 @@ namespace MVCLayer.App_Start
 
         private IUserService CreateUserService()
         {
-            return serviceCreator.CreateUserService("IdentityConnection");
+            return serviceCreator.CreateUserService("IdentityDb");
         }
     }
 }

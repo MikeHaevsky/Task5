@@ -10,5 +10,7 @@ namespace DataAccessLayerIdentity.Interfaces
     public interface IClientManager : IDisposable
     {
         void Create(ClientProfile item);
+        ApplicationUser GetUser(string idUser);
+        IEnumerable<ApplicationUser> GetAllUsers();
     }
 }
