@@ -16,11 +16,25 @@
         @Html.DropDownList("client", Model.Clients as SelectList, htmlAttributes: new { @class = "form-control" })
         <label class="control-label">Product: </label>
         @Html.DropDownList("product", Model.Products as SelectList, htmlAttributes: new { @class = "form-control" })
+        <p></p>
+        @Html.TextBox("lowCost", Model.LowCost, htmlAttributes: new { @class = "form-control" })
+        <label class="control-label"> to </label>
+        @Html.TextBox("highCost", Model.HighCost, htmlAttributes: new { @class = "form-control" })
+        <p></p>
+        <input type="date" class="form-control" id="date" name="date" />
         <input type="submit" value="Filter" class="btn btn-default" />
+        <input type="button" value="Skip filters" onclick="SkipFilters" class="btn-danger" />
+        <script type="text/javascript">
+            function SkipFilters() {
+                document.getElementById("p1").innerHTML = "Новый текст!";
+                document.getElementById("manager").innerHTML;
+                document.ATTRIBUTE_NODE.
+            }
+        </script>
     </div>
 </form>
 
-<div class="well">
+@*<div class="well">
     <h4>Sort by cost</h4>
     <form method="get">
         <div class="form-inline">
@@ -41,7 +55,7 @@
             <input type="submit" value="Filter" class="btn btn-default" />
         </div>
     </form>
-</div>
+</div>*@
 
 <table class="table">
     <tr>

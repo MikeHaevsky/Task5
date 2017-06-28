@@ -17,10 +17,30 @@ namespace DataAccessLayerIdentity.Repositories
             Database = db;
         }
 
-        public void Create(ClientProfile item)
+        public async Task Update(ClientProfile clientProfile)
         {
-            Database.ClientProfiles.Add(item);
-            Database.SaveChanges();
+            ClientProfile client = Database.ClientProfiles.FirstOrDefault(item => item.Id == clientProfile.Id);
+            if (client != null)
+            {
+                client.Name = clientProfile.Name;
+                client.Email = clientProfile.Email;
+                client.Address = clientProfile.Address;
+            }
+
+            Database.Entry<ClientProfile>(client).State = System.Data.Entity.EntityState.Modified;
+            await Database.SaveChangesAsync();
+        }
+
+        public async Task Create(ClientProfile clientProfile)
+        {
+            Database.ClientProfiles.Add(clientProfile);
+            await Database.SaveChangesAsync();
+        }
+
+        public async Task Delete(ClientProfile clientProfile)
+        {
+            Database.ClientProfiles.Remove(clientProfile);
+            await Database.SaveChangesAsync();
         }
 
         public IEnumerable<ApplicationUser> GetAllUsers()

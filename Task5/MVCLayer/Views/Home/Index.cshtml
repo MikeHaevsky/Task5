@@ -22,20 +22,3 @@
         <p>Please bear with my meager skills...</p>
     </div>
 </div>
-
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close" type="button" data-dismiss="modal">×</button>
-            </div>
-            <div class="modal-body">@ViewBag.Modal</div>
-            <div class="modal-footer"><button class="btn btn-default" type="button" data-dismiss="modal">Закрыть</button></div>
-        </div>
-    </div>
-</div>
-
-@if (ViewBag.Modal != "")
-{
-    <script>$('#myModal').modal(options);</script>
-}

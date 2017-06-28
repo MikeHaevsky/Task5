@@ -104,7 +104,7 @@ namespace MVCLayer.Controllers
                 }
             }
 
-            if (lowCost != null || highCost != null && lowCost < highCost)
+            if (lowCost != null && highCost!=null && highCost!=0)
             {
                 try
                 {
@@ -115,8 +115,8 @@ namespace MVCLayer.Controllers
                     ViewBag.Message = ViewBag.Message + "|Operations not found from current cost interval " + lowCost.ToString() + "/" + highCost.ToString();
                 }
             }
-            else
-                ViewBag.Message("Low cost is more than high cost");
+            //else
+            //    ViewBag.Message("Low cost is more than high cost");
 
             if (date != null)
             {

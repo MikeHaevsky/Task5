@@ -15,5 +15,6 @@ namespace BusinessLogicIdentityLayer.DTO
         public string Name { get; set; }
         public string Address { get; set; }
         public string Role { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }

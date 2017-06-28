@@ -177,10 +177,12 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SalesViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\NinjectDependencyResolver.cs" />
@@ -225,7 +227,10 @@
     <Content Include="Views\Home\Managers.cshtml" />
     <Content Include="Views\Home\Products.cshtml" />
     <Content Include="Views\Account\GetAccount.cshtml" />
-    <Content Include="Views\Account\GetUsers.cshtml" />
+    <Content Include="Views\Account\GetAccounts.cshtml" />
+    <Content Include="Views\Manage\Delete.cshtml" />
+    <Content Include="Views\Manage\Edit.cshtml" />
+    <Content Include="Views\Manage\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogicIdentityLayer\BusinessLogicIdentityLayer.csproj">

@@ -9,7 +9,9 @@ namespace DataAccessLayerIdentity.Interfaces
 {
     public interface IClientManager : IDisposable
     {
-        void Create(ClientProfile item);
+        Task Create(ClientProfile clientProfile);
+        Task Update(ClientProfile clientProfile);
+        Task Delete(ClientProfile clientProfile);
         ApplicationUser GetUser(string idUser);
         IEnumerable<ApplicationUser> GetAllUsers();
     }
