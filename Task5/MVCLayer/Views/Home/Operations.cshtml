@@ -23,39 +23,23 @@
         <p></p>
         <input type="date" class="form-control" id="date" name="date" />
         <input type="submit" value="Filter" class="btn btn-default" />
-        <input type="button" value="Skip filters" onclick="SkipFilters" class="btn-danger" />
+        <input type="button" value="Skip filters" onchange="SkipFilters" class="btn-danger" />
         <script type="text/javascript">
             function SkipFilters() {
-                document.getElementById("p1").innerHTML = "Новый текст!";
-                document.getElementById("manager").innerHTML;
-                document.ATTRIBUTE_NODE.
+                //document.getElementById("p1").innerHTML = "Новый текст!";
+                //document.getElementById("manager")[0].;
+                var managerList = document.getElementById("manager");
+                managerList.valueOf = 0;
+
+                var clientList = document.getElementById("client");
+                var productList = document.getElementById("product");
+                var lCost = document.getElementById("lowCost").v;
+                var hCost = document.getElementById("highCost");
+                
             }
         </script>
     </div>
 </form>
-
-@*<div class="well">
-    <h4>Sort by cost</h4>
-    <form method="get">
-        <div class="form-inline">
-            <label class="control-label">from </label>
-            @Html.TextBox("lowCost", Model.LowCost, htmlAttributes: new { @class = "form-control" })
-            <label class="control-label"> to </label>
-            @Html.TextBox("highCost", Model.HighCost, htmlAttributes: new { @class = "form-control" })
-            <input type="submit" value="Filter" class="btn btn-default" />
-        </div>
-    </form>
-</div>
-
-<div class="well">
-    <h4>Find by date</h4>
-    <form method="get">
-        <div class="form-inline">
-            <input type="date" class="form-control" id="date" name="date" />
-            <input type="submit" value="Filter" class="btn btn-default" />
-        </div>
-    </form>
-</div>*@
 
 <table class="table">
     <tr>

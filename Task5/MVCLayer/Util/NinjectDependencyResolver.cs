@@ -31,6 +31,7 @@ namespace MVCLayer.Util
         private void AddBindings()
         {
             kernel.Bind<IOperationService>().To<OperationService>();
+            kernel.Bind<IChartsService>().To<ChartsService>();
         }
     }
 }

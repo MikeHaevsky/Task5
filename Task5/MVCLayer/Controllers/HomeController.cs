@@ -71,63 +71,41 @@ namespace MVCLayer.Controllers
             if (manager != null && manager != 0)
             {
                 try
-                {
-                    operationDTOs = operationDTOs.Where(p => p.ManagerId == manager);
-                }
+                { operationDTOs = operationDTOs.Where(p => p.ManagerId == manager);}
                 catch
-                {
-                    ViewBag.Message= ViewBag.Message+"Manager with id="+manager.ToString()+" not found";
-                }
+                { ViewBag.Message= ViewBag.Message+"Manager with id="+manager.ToString()+" not found";}
             }
 
             if (client != null && client != 0)
             {
                 try
-                {
-                    operationDTOs = operationDTOs.Where(p => p.ClientId == client);
-                }
+                { operationDTOs = operationDTOs.Where(p => p.ClientId == client);}
                 catch
-                {
-                    ViewBag.Message = ViewBag.Message + "|Client with id=" + client.ToString() + " not found";
-                }
+                { ViewBag.Message = ViewBag.Message + "|Client with id=" + client.ToString() + " not found";}
             }
 
             if (product != null && product != 0)
             {
                 try
-                {
-                    operationDTOs = operationDTOs.Where(p => p.ProductId == product);
-                }
+                { operationDTOs = operationDTOs.Where(p => p.ProductId == product);}
                 catch
-                {
-                    ViewBag.Message = ViewBag.Message + "|Product with id=" + product.ToString() + " not found";
-                }
+                { ViewBag.Message = ViewBag.Message + "|Product with id=" + product.ToString() + " not found";}
             }
 
             if (lowCost != null && highCost!=null && highCost!=0)
             {
                 try
-                {
-                    operationDTOs = operationDTOs.Where(p => p.Cost >= lowCost && p.Cost <= highCost);
-                }
+                { operationDTOs = operationDTOs.Where(p => p.Cost >= lowCost && p.Cost <= highCost);}
                 catch
-                {
-                    ViewBag.Message = ViewBag.Message + "|Operations not found from current cost interval " + lowCost.ToString() + "/" + highCost.ToString();
-                }
+                { ViewBag.Message = ViewBag.Message + "|Operations not found from current cost interval " + lowCost.ToString() + "/" + highCost.ToString();}
             }
-            //else
-            //    ViewBag.Message("Low cost is more than high cost");
 
             if (date != null)
             {
                 try
-                {
-                    operationDTOs = operationDTOs.Where(p => p.Date == date);
-                }
+                { operationDTOs = operationDTOs.Where(p => p.Date == date);}
                 catch
-                {
-                    ViewBag.Message = ViewBag.Message + "|Operations at " + date.ToString() + " not found";
-                }
+                { ViewBag.Message = ViewBag.Message + "|Operations at " + date.ToString() + " not found";}
             }
             if (operationDTOs.Count() == 0)
                 ViewBag.Message = ViewBag.Message + "Operations not found";
@@ -148,7 +126,7 @@ namespace MVCLayer.Controllers
             {
                 Managers = new SelectList(managerDTOs, "Id", "Nickname"),
                 Clients = new SelectList(clientDTOs, "Id", "Nickname"),
-                Products = new SelectList(productDTOs, "Id", "Name"),
+                Products = new SelectList(productDTOs, "Id", "Nickname"),
                 SomeOperations = operations.ToList()
             };
 
