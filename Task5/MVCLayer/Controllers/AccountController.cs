@@ -39,7 +39,6 @@ namespace MVCLayer.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
@@ -71,7 +70,6 @@ namespace MVCLayer.Controllers
             return View(model);
         }
 
-        [Authorize]
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
@@ -79,7 +77,6 @@ namespace MVCLayer.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -142,7 +139,6 @@ namespace MVCLayer.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult> GetAccount()
         {
             string userId = User.Identity.GetUserId();

@@ -20,7 +20,6 @@ using System.Web.Mvc;
 
 namespace MVCLayer.Controllers
 {
-    [Authorize(Roles = "admin")]
     public class ManageController : Controller
     {
         private IUserService UserService

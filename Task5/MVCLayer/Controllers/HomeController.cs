@@ -26,7 +26,6 @@ namespace MVCLayer.Controllers
             return View();
         }
 
-        [Authorize]
         public ActionResult Clients()
         {
             IEnumerable<ClientDTO> clientDTOs = operationService.GetClients();
@@ -35,7 +34,6 @@ namespace MVCLayer.Controllers
             return View(clients);
         }
 
-        [Authorize]
         public ActionResult Managers()
         {
             IEnumerable<ManagerDTO> managerDTOs = operationService.GetManagers();
@@ -44,7 +42,6 @@ namespace MVCLayer.Controllers
             return View(managers);
         }
 
-        [Authorize]
         public ActionResult Products()
         {
             IEnumerable<ProductDTO> productDTOs = operationService.GetProducts();
@@ -53,7 +50,6 @@ namespace MVCLayer.Controllers
             return View(products);
         }
 
-        [Authorize]
         public ActionResult Operation()
         {
             IEnumerable<OperationDTO> operationDTOs = operationService.GetOperations();
@@ -62,7 +58,6 @@ namespace MVCLayer.Controllers
             return View(operations);
         }
 
-        [Authorize]
         [HttpGet]
         public ActionResult Operations(int? manager, int? client, int? product, int? lowCost, int? highCost, DateTime? date)
         {
@@ -126,7 +121,7 @@ namespace MVCLayer.Controllers
             {
                 Managers = new SelectList(managerDTOs, "Id", "Nickname"),
                 Clients = new SelectList(clientDTOs, "Id", "Nickname"),
-                Products = new SelectList(productDTOs, "Id", "Nickname"),
+                Products = new SelectList(productDTOs, "Id", "Name"),
                 SomeOperations = operations.ToList()
             };
 
