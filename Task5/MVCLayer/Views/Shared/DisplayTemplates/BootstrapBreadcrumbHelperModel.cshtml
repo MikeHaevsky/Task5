@@ -1,0 +1,21 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapPathHelperModel
+@using System.Web.Mvc.Html
+@using MvcSiteMapProvider.Web.Html.Models
+
+<nav class="breadcrumb">
+    @foreach (var node in Model)
+    {
+        if (node == Model.Last()) {
+            <span class="breadcrumb-item active">
+                @node.Description
+            </span>
+        }
+        else
+        {
+            @Html.ActionLink(node.Description, node.Action, node.Controller, new { @class = "breadcrumb-item" });
+        if (node!=Model.Last()){
+            <text> &gt; </text>
+            }
+        }
+    }
+</nav>

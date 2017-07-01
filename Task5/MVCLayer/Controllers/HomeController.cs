@@ -2,6 +2,7 @@
 using BusinessLogicLayer.DTO;
 using BusinessLogicLayer.Infrastructure;
 using BusinessLogicLayer.Interfaces;
+using Microsoft.Owin.Security;
 using MVCLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -12,15 +13,24 @@ using System.Web.Mvc;
 
 namespace MVCLayer.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         IOperationService operationService;
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
 
         public HomeController(IOperationService service)
         {
             operationService = service;
         }
 
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
@@ -31,6 +41,10 @@ namespace MVCLayer.Controllers
             IEnumerable<ClientDTO> clientDTOs = operationService.GetClients();
             Mapper.Initialize(cfg => cfg.CreateMap<ClientDTO, ClientViewModel>());
             var clients = Mapper.Map<IEnumerable<ClientDTO>, List<ClientViewModel>>(clientDTOs);
+
+            bool auth = AuthenticationManager.User.IsInRole("admin");
+            ViewBag.IsAdmin = auth;
+
             return View(clients);
         }
 
@@ -39,6 +53,10 @@ namespace MVCLayer.Controllers
             IEnumerable<ManagerDTO> managerDTOs = operationService.GetManagers();
             Mapper.Initialize(cfg => cfg.CreateMap<ManagerDTO, ManagerViewModel>());
             var managers = Mapper.Map<IEnumerable<ManagerDTO>, List<ManagerViewModel>>(managerDTOs);
+
+            bool auth = AuthenticationManager.User.IsInRole("admin");
+            ViewBag.IsAdmin = auth;
+
             return View(managers);
         }
 
@@ -47,6 +65,9 @@ namespace MVCLayer.Controllers
             IEnumerable<ProductDTO> productDTOs = operationService.GetProducts();
             Mapper.Initialize(cfg => cfg.CreateMap<ProductDTO, ProductViewModel>());
             var products = Mapper.Map<IEnumerable<ProductDTO>, List<ProductViewModel>>(productDTOs);
+
+            bool auth = AuthenticationManager.User.IsInRole("admin");
+            ViewBag.IsAdmin = auth;
             return View(products);
         }
 
@@ -125,9 +146,13 @@ namespace MVCLayer.Controllers
                 SomeOperations = operations.ToList()
             };
 
+            bool auth = AuthenticationManager.User.IsInRole("admin");
+            ViewBag.IsAdmin = auth;
+
             return View(opv);
         }
 
+        [AllowAnonymous]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -137,6 +162,9 @@ namespace MVCLayer.Controllers
 
         public ActionResult Operations()
         {
+            bool auth = AuthenticationManager.User.IsInRole("admin");
+            ViewBag.IsAdmin = auth;
+
             return View();
         }
     }

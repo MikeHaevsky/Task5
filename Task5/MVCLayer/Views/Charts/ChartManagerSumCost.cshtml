@@ -14,7 +14,10 @@
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Managers');
             data.addColumn('number', 'Total Cost');
-
+            //data.addRows([["Managers",0]
+            //    ["Ivanov", 1457],
+            //    [ "Sidorov", 137033 ],
+            //    [ "Petrov", 1000199 ]])
             $.getJSON('@Url.Action("GetChartManagerSumCost", "Charts")',
                 null,
                 function (result) {
@@ -23,13 +26,18 @@
                         $.each(result, function (index, c) {
                             data.addRow(
                                 [c.Nickname, c.SumCost]
-                             );
+                                );
+                        //$.each(result, function (index, c) {
+
+                        //    data.addRow(
+                        //        [c.Nickname, c.SumCost]
+                        //     );
                         });
                         var options = {
                             'title': 'Manager sales Diagramm',
                             'width': 400,
                             'height': 300,
-                            
+                            'pieHole': 0.4,
                             'is3D': true
                         };
                         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -41,6 +49,8 @@
 </head>
 
 <body>
+    <div id="table_div">
+    </div>
     <div id="chart_div">
         @*Diagramm*@
     </div>

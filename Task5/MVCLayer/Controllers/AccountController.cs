@@ -20,6 +20,7 @@ using System.Web.Mvc;
 
 namespace MVCLayer.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private IUserService UserService
@@ -38,14 +39,13 @@ namespace MVCLayer.Controllers
             }
         }
 
-        [HttpGet]
+        [AllowAnonymous][HttpGet]
         public ActionResult Login()
         {
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [AllowAnonymous][HttpPost][ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model)
         {
             await SetInitialDataAsync();
@@ -76,48 +76,26 @@ namespace MVCLayer.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
+        [AllowAnonymous][HttpGet]
         public ActionResult Register()
         {
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [AllowAnonymous][HttpPost][ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
             await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 Mapper.Initialize(cfg => cfg.CreateMap<RegisterModel, UserDTO>()
-                    //.ForMember(x=>x.Role,opt=>opt.MapFrom("user"))
                     .ForMember(x=>x.Id,opt=>opt.Ignore()));
                 UserDTO userDTO = Mapper.Map<RegisterModel, UserDTO>(model);
                 userDTO.Role = "user";
 
-                //UserDTO userDto = new UserDTO
-                //{
-                //    Email = model.Email,
-                //    Password = model.Password,
-                //    Address = model.Address,
-                //    Name = model.Name,
-                //    Role = "user"
-                //};
                 OperationDetails operationDetails = await UserService.Create(userDTO);
                 if (operationDetails.Succedeed)
                 {
-                    //UserModel user = new UserModel
-                    //{
-                    //    Address = model.Address,
-                    //    Email = model.Email,
-                    //    Name = model.Name,
-                    //    Role = userDto.Role
-                    //};
-                    //LoginModel login = new LoginModel
-                    //{
-                    //    Email = model.Email,
-                    //    Password = model.Password
-                    //};
                     UserDTO newUserDTO = new UserDTO { Email = model.Email, Password = model.Password };
                     ClaimsIdentity claim = await UserService.Authenticate(newUserDTO);
                     
@@ -145,7 +123,6 @@ namespace MVCLayer.Controllers
             UserDTO userDTO=await UserService.GetUser(userId);
             Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, UserModel>());
             UserModel user = Mapper.Map<UserDTO, UserModel>(userDTO);
-            //user.Roles = userDTO.Roles;
 
             return View(user);
         }
@@ -158,6 +135,7 @@ namespace MVCLayer.Controllers
             return View(users.ToList());
         }
 
+        [AllowAnonymous]
         private async Task SetInitialDataAsync()
         {
             await UserService.SetInitialData(new UserDTO

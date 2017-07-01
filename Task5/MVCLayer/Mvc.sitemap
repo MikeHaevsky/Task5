@@ -6,11 +6,14 @@
   <mvcSiteMapNode title="Homepage" controller="Home" action="Index" description="Homepage">
     <mvcSiteMapNode title="About" controller="Home" action="About" description="About"/>
     <mvcSiteMapNode title="Information" controller="Home" action="Index" description="Information" roles="user;admin">
-      <mvcSiteMapNode title="Managers information" controller="Home" action="Managers" description="Managers"/>
-      <mvcSiteMapNode title="Operations information" controller="Home" action="Operations" description="Operations"/>
+      <mvcSiteMapNode title="Managers information" controller="Home" action="Managers" description="Managers" roles="user;admin"/>
+      <mvcSiteMapNode title="Clients information" controller="Home" action="Clients" description="Clients" roles="user;admin"/>
+      <mvcSiteMapNode title="Products information" controller="Home" action="Products" description="Products" roles="user;admin"/>
+      <mvcSiteMapNode title="Operations information" controller="Home" action="Operations" description="Operations" roles="user;admin"/>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Contact information" controller="Home" action="Contact" description="Contact"/>
-    <mvcSiteMapNode title="Draw chart" controller="Charts" action="ChartManagerSumCost" description="Chart 1" roles="user"/>
+    <mvcSiteMapNode title="Draw chart" controller="Charts" action="ChartManagerSumCost" description="Chart 1" roles="user;admin"/>
+    <mvcSiteMapNode title="Administrative tools for manage user accounts" controller="Account" action="GetAccounts" description="Manage users" roles="admin"/>
   </mvcSiteMapNode>
 
 </mvcSiteMap>

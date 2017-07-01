@@ -20,6 +20,7 @@ using System.Web.Mvc;
 
 namespace MVCLayer.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class ManageController : Controller
     {
         private IUserService UserService
@@ -41,7 +42,7 @@ namespace MVCLayer.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            SelectList rolesList=new SelectList(UserService.GetRoles());
+            SelectList rolesList = new SelectList(UserService.GetRoles());
             CreateUserViewModel model = new CreateUserViewModel { Roles = rolesList };
 
             return View(model);
@@ -65,10 +66,10 @@ namespace MVCLayer.Controllers
                 {
                     return RedirectToAction("GetAccounts", "Account");
                 }
-            else
-                ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                else
+                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
-        return View(model);
+            return View(model);
         }
 
         [HttpGet]
@@ -78,7 +79,7 @@ namespace MVCLayer.Controllers
             if (userDTO != null)
             {
                 Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, EditUserViewModel>()
-                    .ForMember(x=>x.Roles,opt=>opt.Ignore()));
+                    .ForMember(x => x.Roles, opt => opt.Ignore()));
                 EditUserViewModel editModel = Mapper.Map<UserDTO, EditUserViewModel>(userDTO);
                 //колхоз
                 editModel.Roles = new SelectList(UserService.GetRoles());
@@ -137,20 +138,5 @@ namespace MVCLayer.Controllers
                 ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             return View(model);
         }
-
-        //[HttpGet]
-        //public async Task<ActionResult> Delete(int? id)
-        //{
-        //    UserDTO userDTO = await UserService.GetUser(id.ToString());
-        //    if (userDTO != null)
-        //    {
-        //        Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, UserModel>());
-        //        UserModel model = Mapper.Map<UserDTO, UserModel>(userDTO);
-        //        return View(model);
-        //    }
-        //    else
-        //        ViewBag.Error="User not found";
-        //    return View(ViewBag);
-        //}
-        }
+    }
 }
