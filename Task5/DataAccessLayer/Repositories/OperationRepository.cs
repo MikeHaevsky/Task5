@@ -26,28 +26,22 @@ namespace DataAccessLayer.Repositories
 
         public Operation Get(int id)
         {
-            return db.Operations.FirstOrDefault(item => item.Id == id);
+            return db.Operations.Find(id);
         }
 
         public void Create(Operation item)
         {
-            Operation operation = db.Operations.FirstOrDefault(x => x.Id == item.Id);
-            if (operation == null)
-                db.Operations.Add(item);
+            db.Operations.Add(item);
         }
 
         public void Update(Operation item)
         {
-            Operation operation = db.Operations.FirstOrDefault(x => x.Id == item.Id);
-            if (operation != null)
-                db.Entry(item).State = EntityState.Modified;
+            db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(Operation item)
         {
-            Operation operation = db.Operations.FirstOrDefault(x => x.Id == id);
-            if (operation != null)
-                db.Operations.Remove(operation);
+            db.Operations.Remove(item);
         }
     }
 }

@@ -17,10 +17,12 @@ namespace BusinessLogicIdentityLayer.Services
     public class UserService : IUserService
     {
         IUnitOfWork Database { get; set; }
+        BLIMapper MapperBLI { get; set; }
 
         public UserService(IUnitOfWork uow)
         {
             Database = uow;
+            MapperBLI = new BLIMapper();
         }
 
         public async Task<OperationDetails> Create(UserDTO userDTO)
@@ -29,10 +31,7 @@ namespace BusinessLogicIdentityLayer.Services
             if (user == null)
             {
                 user = new ApplicationUser { Email = userDTO.Email, UserName = userDTO.Email };
-
-                Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, ClientProfile>());
-                //ClientProfile clientProfile = Mapper.Map<UserDTO, ClientProfile>(userDTO);
-                user.ClientProfile = Mapper.Map<UserDTO, ClientProfile>(userDTO);
+                user.ClientProfile = MapperBLI.Mapping(userDTO);
 
                 var result = await Database.UserManager.CreateAsync(user, userDTO.Password);
                 if (result.Errors.Count() > 0)
@@ -59,9 +58,8 @@ namespace BusinessLogicIdentityLayer.Services
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
 
-                Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, ClientProfile>());
-                ClientProfile clientProfile = Mapper.Map<UserDTO, ClientProfile>(userDTO);
-                await Database.ClientManager.Update(clientProfile);
+                ClientProfile clientProfile = MapperBLI.Mapping(userDTO);
+                Database.ClientManager.Update(clientProfile);
 
                 List<string> roles = GetRoles();
                 foreach (string role in roles)
@@ -83,8 +81,8 @@ namespace BusinessLogicIdentityLayer.Services
             ApplicationUser user = await Database.UserManager.FindByIdAsync(userDTO.Id);
             if (user != null)
             {
-                await Database.ClientManager.Delete(user.ClientProfile);
-                var result = await Database.UserManager.DeleteAsync(user);
+                Database.ClientManager.Delete(user.ClientProfile);
+                var result = Database.UserManager.Delete(user);
                 
                 await Database.SaveAsync();
                 if (result.Errors.Count() > 0)
@@ -136,13 +134,7 @@ namespace BusinessLogicIdentityLayer.Services
         {
             ApplicationUser user = await Database.UserManager.FindByIdAsync(idUser);
             IEnumerable<string> userRole = await GetCurrentRoles(user);
-
-            Mapper.Initialize(cfg => cfg.CreateMap<ApplicationUser, UserDTO>()
-                .ForMember(x => x.Name, opt => opt.MapFrom(item => item.ClientProfile.Name))
-                .ForMember(x => x.Address, opt => opt.MapFrom(item => item.ClientProfile.Address))
-                .ForMember(x => x.Roles, opt => opt.MapFrom(item => userRole)));
-
-            UserDTO userDTO = Mapper.Map<ApplicationUser, UserDTO>(user);
+            UserDTO userDTO = MapperBLI.Mapping(user,userRole);
 
             return userDTO;
         }
@@ -155,14 +147,7 @@ namespace BusinessLogicIdentityLayer.Services
             foreach (ApplicationUser user in users)
             {
                 IEnumerable<string> userRole = await GetCurrentRoles(user);
-
-                Mapper.Initialize(cfg => cfg.CreateMap<ApplicationUser, UserDTO>()
-                    .ForMember(x => x.Name, opt => opt.MapFrom(item => item.ClientProfile.Name))
-                    .ForMember(x => x.Address, opt => opt.MapFrom(item => item.ClientProfile.Address))
-                    .ForMember(x => x.Roles, opt => opt.MapFrom(item => userRole))
-                    .ForMember(x => x.Id, opt => opt.MapFrom(item => item.Id)));
-
-                UserDTO userDTO = Mapper.Map<ApplicationUser, UserDTO>(user);
+                UserDTO userDTO = MapperBLI.Mapping(user, userRole);
 
                 userDTOs.Add(userDTO);
             }

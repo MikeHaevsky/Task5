@@ -23,51 +23,47 @@ namespace BusinessLogicLayer.Services
 
         public OperationDetails EditManager(ManagerDTO managerDTO)
         {
-            Manager managerDB = Database.Managers.Get(managerDTO.Id);
-            if (managerDB == null)
-            return new OperationDetails(false, "Manager is not exist on DB", "");
-            else
+            Manager manager = Database.Managers.Get(managerDTO.Id);
+            if (manager != null)
             {
-                Mapper.Initialize(opt => opt.CreateMap<ManagerDTO, Manager>());
-                Manager manager = Mapper.Map<ManagerDTO, Manager>(managerDTO);
-                manager.Operations = managerDB.Operations;
+                manager.Nickname = managerDTO.Nickname;
 
                 Database.Managers.Update(manager);
                 Database.Save();
                 return new OperationDetails(true, "Update manager success", "");
             }
+            else
+                return new OperationDetails(false, "Update manager unsuccess", "");
         }
 
         public OperationDetails EditClient(ClientDTO clientDTO)
         {
             Client client = Database.Clients.Get(clientDTO.Id);
-            if (client == null)
-                return new OperationDetails(false,"Client is not exist on DB", "");
-            else
+            if (client != null)
             {
-                Mapper.Initialize(opt => opt.CreateMap<ClientDTO, Client>());
-                client = Mapper.Map<ClientDTO, Client>(clientDTO);
+                client.Nickname = clientDTO.Nickname;
 
                 Database.Clients.Update(client);
                 Database.Save();
                 return new OperationDetails(true, "Update client success", "");
             }
+            else
+                return new OperationDetails(false,"Update client UNsuccess","");
         }
 
         public OperationDetails EditProduct(ProductDTO productDTO)
         {
             Product product = Database.Products.Get(productDTO.Id);
-            if (product == null)
-                return new OperationDetails(false,"Product is not exist on DB", "");
-            else
+            if (product != null)
             {
-                Mapper.Initialize(opt => opt.CreateMap<ProductDTO, Product>());
-                product = Mapper.Map<ProductDTO, Product>(productDTO);
+                product.Name=productDTO.Name;
 
                 Database.Products.Update(product);
                 Database.Save();
                 return new OperationDetails(true, "Update product success", "");
             }
+            else
+                return new OperationDetails(false,"Product is not exist on DB", "");
         }
 
         public OperationDetails EditOperation(OperationDTO operationDTO)
@@ -85,12 +81,21 @@ namespace BusinessLogicLayer.Services
             if (product == null)
                 return operationDetails = new OperationDetails(false, "/The product is not found/", "");
 
-            Mapper.Initialize(opt => opt.CreateMap<OperationDTO, Operation>());
-            Operation operation = Mapper.Map<OperationDTO, Operation>(operationDTO);
+            Operation operation = Database.Operations.Get(operationDTO.Id);
+            if (operation != null)
+            {
+                operation.ClientId = operationDTO.ClientId;
+                operation.ManagerId = operationDTO.ManagerId;
+                operation.ProductId = operationDTO.ProductId;
+                operation.Date = operationDTO.Date;
+                operation.Cost = operationDTO.Cost;
 
-            Database.Operations.Update(operation);
-            Database.Save();
-            return operationDetails = new OperationDetails(true, "Update operation success", "");
+                Database.Operations.Update(operation);
+                Database.Save();
+                return operationDetails = new OperationDetails(true, "Update operation success", "");
+            }
+            else
+                return operationDetails = new OperationDetails(false, "Update operation UNsuccess", "");
         }
         public void Dispose()
         {

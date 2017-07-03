@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DALMApper.cs" />
+    <Compile Include="BLMapper.cs" />
     <Compile Include="DTO\ClientDTO.cs" />
     <Compile Include="DTO\ManagerDTO.cs" />
     <Compile Include="DTO\ManagerDTOSumCost.cs" />

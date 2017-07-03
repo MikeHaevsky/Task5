@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Interfaces;
+﻿using AutoMapper;
+using DataAccessLayer.Interfaces;
 using DataAccessLayer.Repositories;
 using Ninject.Modules;
 using System;

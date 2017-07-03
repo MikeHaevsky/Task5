@@ -14,43 +14,30 @@ namespace BusinessLogicLayer.Services
     public class ChartsService:IChartsService
     {
         IUnitOfWork Database { get; set; }
+        BLMapper MapperBL { get; set; }
 
         public ChartsService(IUnitOfWork uow)
         {
             Database = uow;
+            MapperBL = new BLMapper();
         }
 
-        private IEnumerable<OperationDTO> GetOperations()
-        {
-            Mapper.Initialize(cfg => cfg.CreateMap<Operation, OperationDTO>()
-                .ForMember(x => x.ClientNickname, opt => opt.MapFrom(item => item.Client.Nickname))
-                .ForMember(x => x.ManagerNickname, opt => opt.MapFrom(item => item.Manager.Nickname))
-                .ForMember(x => x.ProductName, opt => opt.MapFrom(item => item.Product.Name))
-                );
-            return Mapper.Map<IEnumerable<Operation>, IEnumerable<OperationDTO>>(Database.Operations.GetAll());
-        }
-
-        private IEnumerable<ManagerDTO> GetManagers()
-        {
-            Mapper.Initialize(cfg => cfg.CreateMap<Manager, ManagerDTO>());
-            return Mapper.Map<IEnumerable<Manager>, List<ManagerDTO>>(Database.Managers.GetAll());
-        }
         public IEnumerable<ManagerDTOSumCost> GetSumCostManager()
         {
-            IEnumerable<ManagerDTO> managerDTOs = GetManagers();
-            IEnumerable<OperationDTO> operationDTOs=GetOperations();
+            IEnumerable<Operation> operations = Database.Operations.GetAll();
+            IEnumerable<OperationDTO> operationDTOs = MapperBL.Mapping(operations);
 
-            Mapper.Initialize(opt => opt.CreateMap<ManagerDTO, ManagerDTOSumCost>());
-            IEnumerable<ManagerDTOSumCost> managers = Mapper.Map<IEnumerable<ManagerDTO>, IEnumerable<ManagerDTOSumCost>>(managerDTOs);
+            IEnumerable<Manager> managers = Database.Managers.GetAll();
+            IEnumerable<ManagerDTOSumCost> managersSum = MapperBL.MappingGraph(managers);
 
-            IEnumerable<IGrouping<int,string>> managersGr= managers.GroupBy(x=>x.Id,y=>y.Nickname);
+            IEnumerable<IGrouping<int,string>> managersGr= managersSum.GroupBy(x=>x.Id,y=>y.Nickname);
 
             foreach (IGrouping<int,string> manager in managersGr)
             {
-                ManagerDTOSumCost man = managers.FirstOrDefault(item => item.Id == manager.Key);
+                ManagerDTOSumCost man = managersSum.FirstOrDefault(item => item.Id == manager.Key);
                 man.SumCost = operationDTOs.Where(x => x.ManagerId==man.Id).Sum(y => y.Cost);
             }
-            return managers;
+            return managersSum;
         }
 
         public void Dispose()

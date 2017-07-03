@@ -26,37 +26,22 @@ namespace DataAccessLayer.Repositories
 
         public Manager Get(int id)
         {
-            return db.Managers.FirstOrDefault(item => item.Id == id);
+            return db.Managers.Find(id);
         }
 
         public void Create(Manager item)
         {
-            Manager manager = db.Managers.FirstOrDefault(x => x.Id == item.Id);
-            if (manager == null)
-                db.Managers.Add(item);
+            db.Managers.Add(item);
         }
 
         public void Update(Manager item)
         {
-            Manager manager = db.Managers.FirstOrDefault(x => x.Id == item.Id);
-            if (manager != null)
-            {
-                manager.Nickname = item.Nickname;
-            //db.Managers.Attach(item);
-            //var entry = db.Entry(item);
-            //entry.Property(e => e.Nickname).IsModified = true;
-                db.Entry<Manager>(manager).State = EntityState.Modified;
-                db.SaveChanges();
-            }
-
-            //db.SaveChanges();
+            db.Entry<Manager>(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(Manager item)
         {
-            Manager manager = db.Managers.FirstOrDefault(x => x.Id == id);
-            if (manager == null)
-                db.Managers.Remove(manager);
+            db.Managers.Remove(item);
         }
     }
 }

@@ -11,7 +11,7 @@
 {
     @Html.AntiForgeryToken()
     
-    @if (Model.NotFound)
+    if (Model.NotFound)
     {
         <h3>Operation not found</h3>
     }
@@ -32,23 +32,23 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Manager, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ManagerId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(x=>x.Manager,Model.ManagerList)
+                @Html.DropDownListFor(x=>x.ManagerId,Model.ManagerList)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Client, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ClientId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(x => x.Client, Model.ClientList)
+                @Html.DropDownListFor(x => x.ClientId, Model.ClientList)
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Product, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ProductId, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(x => x.Product, Model.ProductList)
+                @Html.DropDownListFor(x => x.ProductId, Model.ProductList)
             </div>
         </div>
 

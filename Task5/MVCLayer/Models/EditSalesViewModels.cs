@@ -29,11 +29,11 @@ namespace MVCLayer.Models
         public int Id { get; set; }
         public System.DateTime Date { get; set; }
         public SelectList ManagerList { get; set; }
-        public int Manager { get; set; }
+        public int ManagerId { get; set; }
         public SelectList ClientList { get; set; }
-        public int Client { get; set; }
+        public int ClientId { get; set; }
         public SelectList ProductList { get; set; }
-        public int Product { get; set; }
+        public int ProductId { get; set; }
         public int Cost { get; set; }
         public bool NotFound { get; set; }
     }

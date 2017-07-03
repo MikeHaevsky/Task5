@@ -12,6 +12,7 @@ namespace MVCLayer.App_Start
     using Ninject.Web.Common;
     using BusinessLogicLayer.Infrastructure;
     using Ninject.Modules;
+    using AutoMapper;
 
     public static class NinjectWebCommon 
     {
@@ -43,6 +44,7 @@ namespace MVCLayer.App_Start
         {
             var modules = new INinjectModule[] { new ServiceModule("SalesSaverDBContext") };
             var kernel = new StandardKernel(modules);
+
             try
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);

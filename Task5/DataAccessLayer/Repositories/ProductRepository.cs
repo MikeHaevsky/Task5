@@ -26,28 +26,22 @@ namespace DataAccessLayer.Repositories
 
         public Product Get(int id)
         {
-            return db.Products.FirstOrDefault(item => item.Id == id);
+            return db.Products.Find(id);
         }
 
         public void Create(Product item)
         {
-            Product product = db.Products.FirstOrDefault(x => x.Id == item.Id);
-            if (product == null)
-                db.Products.Add(item);
+            db.Products.Add(item);
         }
 
         public void Update(Product item)
         {
-            Product product = db.Products.FirstOrDefault(x => x.Id == item.Id);
-            if (product != null)
-                db.Entry(item).State = EntityState.Modified;
+            db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(Product item)
         {
-            Product product = db.Products.FirstOrDefault(x => x.Id == id);
-            if (product != null)
-                db.Products.Remove(product);
+            db.Products.Remove(item);
         }
     }
 }

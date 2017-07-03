@@ -16,106 +16,117 @@ namespace BusinessLogicLayer.Services
     public class OperationService : IOperationService
     {
         IUnitOfWork Database { get; set; }
+        BLMapper MapperBL { get; set; }
 
         public OperationService(IUnitOfWork uow)
         {
             Database = uow;
+            MapperBL = new BLMapper();
         }
 
         public ManagerDTO GetManager(int id)
         {
-            Manager manager = Database.Managers.Get(id);
-            ManagerDTO managerDTO;
-
-            if (manager != null)
+            try
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<Manager, ManagerDTO>());
-                managerDTO = Mapper.Map<Manager, ManagerDTO>(manager);
+                Manager manager = Database.Managers.Get(id);
+                return MapperBL.Mapping(manager);
             }
-            else
-                managerDTO=new ManagerDTO();
-
-            return managerDTO;
+            catch (Exception e)
+            {
+                throw new ArgumentException("/Manager not found in table db.Managers/\n" + e.ToString());
+            }
         }
 
         public IEnumerable<ManagerDTO> GetManagers()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Manager, ManagerDTO>());
-            return Mapper.Map<IEnumerable<Manager>, List<ManagerDTO>>(Database.Managers.GetAll());
+            try
+            {
+                IEnumerable<Manager> managers = Database.Managers.GetAll();
+                return MapperBL.Mapping(managers);
+            }
+            catch(Exception e)
+            {
+                throw new ArgumentException("/No elements were sought in db.Managers table/\n" + e.ToString());
+            }
         }
 
         public ClientDTO GetClient(int id)
         {
-            Client client = Database.Clients.Get(id);
-            ClientDTO clientDTO;
-
-            if (client != null)
+            try
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<Client, ClientDTO>());
-                clientDTO = Mapper.Map<Client, ClientDTO>(client);
+                Client client = Database.Clients.Get(id);
+                return MapperBL.Mapping(client);
             }
-            else
-                clientDTO = new ClientDTO();
-
-            return clientDTO;
+            catch (Exception e)
+            {
+                throw new ArgumentException("/Client not found on table db.Managers/\n" + e.ToString());
+            }
         }
 
         public IEnumerable<ClientDTO> GetClients()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Client, ClientDTO>());
-            return Mapper.Map<IEnumerable<Client>, List<ClientDTO>>(Database.Clients.GetAll());
+            try
+            {
+                IEnumerable<Client> clients = Database.Clients.GetAll();
+                return MapperBL.Mapping(clients);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("GetClients error." + e.ToString());
+            }
         }
 
         public ProductDTO GetProduct(int id)
         {
-            Product product = Database.Products.Get(id);
-            ProductDTO productDTO;
-
-            if (product != null)
+            try
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-                productDTO = Mapper.Map<Product, ProductDTO>(product);
+                Product product = Database.Products.Get(id);
+                return MapperBL.Mapping(product);
             }
-            else
-                productDTO = new ProductDTO();
-
-            return productDTO;
+            catch (Exception e)
+            {
+                throw new ArgumentException("/Product not found on table db.Managers/\n" + e.ToString());
+            }
         }
 
         public IEnumerable<ProductDTO> GetProducts()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.GetAll());
+            try
+            {
+                IEnumerable<Product> products = Database.Products.GetAll();
+                return MapperBL.Mapping(products);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("/No elements were sought in db.Products table/\n" + e.ToString());
+            }
         }
 
         public OperationDTO GetOperation(int id)
         {
-            Operation operation = Database.Operations.Get(id);
-            OperationDTO operationDTO;
-
-            if (operation != null)
+            try
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<Operation, OperationDTO>()
-                .ForMember(x => x.ClientNickname, opt => opt.MapFrom(item => item.Client.Nickname))
-                .ForMember(x => x.ManagerNickname, opt => opt.MapFrom(item => item.Manager.Nickname))
-                .ForMember(x => x.ProductName, opt => opt.MapFrom(item => item.Product.Name))
-                );
-                operationDTO = Mapper.Map<Operation, OperationDTO>(operation);
+                Operation operation = Database.Operations.Get(id);
+                return MapperBL.Mapping(operation);
             }
-            else
-                operationDTO = new OperationDTO();
-
-            return operationDTO;
+            catch (Exception e)
+            {
+                throw new ArgumentException("/Operation not found on table db.Managers/\n" + e.ToString());
+            }
+            
         }
 
         public IEnumerable<OperationDTO> GetOperations()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Operation, OperationDTO>()
-                .ForMember(x => x.ClientNickname, opt => opt.MapFrom(item => item.Client.Nickname))
-                .ForMember(x => x.ManagerNickname, opt => opt.MapFrom(item => item.Manager.Nickname))
-                .ForMember(x => x.ProductName, opt => opt.MapFrom(item => item.Product.Name))
-                );
-            return Mapper.Map<IEnumerable<Operation>, List<OperationDTO>>(Database.Operations.GetAll());
+            try
+            {
+                IEnumerable<Operation> operations = Database.Operations.GetAll();
+                return MapperBL.Mapping(operations);
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("/No elements were sought in db.Operations table/\n" + e.ToString());
+            }
         }
 
         public void Dispose()

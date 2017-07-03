@@ -26,28 +26,22 @@ namespace DataAccessLayer.Repositories
 
         public Client Get(int id)
         {
-            return db.Clients.FirstOrDefault(item => item.Id == id);
+            return db.Clients.Find(id);
         }
 
         public void Create(Client item)
         {
-            Client client = db.Clients.FirstOrDefault(x => x.Id == item.Id);
-            if (client == null)
-                db.Clients.Add(item);
+            db.Clients.Add(item);
         }
 
         public void Update(Client item)
         {
-            Client client = db.Clients.FirstOrDefault(x => x.Id == item.Id);
-            if (client != null)
-                db.Entry(item).State = EntityState.Modified;
+            db.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(Client item)
         {
-            Client client = db.Clients.FirstOrDefault(x => x.Id == id);
-            if (client != null)
-                db.Clients.Remove(client);
+            db.Clients.Remove(item);
         }
     }
 }

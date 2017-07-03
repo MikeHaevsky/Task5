@@ -17,30 +17,31 @@ namespace DataAccessLayerIdentity.Repositories
             Database = db;
         }
 
-        public async Task Update(ClientProfile clientProfile)
+        public void Update(ClientProfile clientProfile)
         {
-            ClientProfile client = Database.ClientProfiles.FirstOrDefault(item => item.Id == clientProfile.Id);
+            ClientProfile client = Database.ClientProfiles.Find(clientProfile.Id);//FirstOrDefault(item => item.Id == clientProfile.Id);
             if (client != null)
             {
                 client.Name = clientProfile.Name;
                 client.Email = clientProfile.Email;
                 client.Address = clientProfile.Address;
-            }
 
-            Database.Entry<ClientProfile>(client).State = System.Data.Entity.EntityState.Modified;
-            await Database.SaveChangesAsync();
+                Database.Entry<ClientProfile>(client).State = System.Data.Entity.EntityState.Modified;
+            }
+            else
+            {
+                throw new ArgumentException("ClientProfile not found on dbo.ClienfProfiles" )
+            }
         }
 
-        public async Task Create(ClientProfile clientProfile)
+        public void Create(ClientProfile clientProfile)
         {
             Database.ClientProfiles.Add(clientProfile);
-            await Database.SaveChangesAsync();
         }
 
-        public async Task Delete(ClientProfile clientProfile)
+        public void Delete(ClientProfile clientProfile)
         {
             Database.ClientProfiles.Remove(clientProfile);
-            await Database.SaveChangesAsync();
         }
 
         public IEnumerable<ApplicationUser> GetAllUsers()
@@ -50,7 +51,7 @@ namespace DataAccessLayerIdentity.Repositories
 
         public ApplicationUser GetUser(string idUser)
         {
-            return Database.Users.FirstOrDefault(item => item.Id == idUser);
+            return Database.Users.Find(idUser);
         }
 
         public void Dispose()
