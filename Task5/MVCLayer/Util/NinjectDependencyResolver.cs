@@ -32,6 +32,7 @@ namespace MVCLayer.Util
         {
             kernel.Bind<IOperationService>().To<OperationService>();
             kernel.Bind<IChartsService>().To<ChartsService>();
+            kernel.Bind<IEditSalesService>().To<EditSalesService>();
         }
     }
 }

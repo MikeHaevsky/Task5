@@ -22,45 +22,20 @@ namespace BusinessLogicLayer.Services
             Database = uow;
         }
 
-        public void MakeOperation(OperationDTO operationDTO)
+        public ManagerDTO GetManager(int id)
         {
-            Client client = Database.Clients.Get(operationDTO.ClientId);
-            if (client == null)
-                throw new ValidationException("The client is not found","");
+            Manager manager = Database.Managers.Get(id);
+            ManagerDTO managerDTO;
 
-            Manager manager = Database.Managers.Get(operationDTO.ManagerId);
-            if (manager == null)
-                throw new ValidationException("The manager is not found", "");
+            if (manager != null)
+            {
+                Mapper.Initialize(cfg => cfg.CreateMap<Manager, ManagerDTO>());
+                managerDTO = Mapper.Map<Manager, ManagerDTO>(manager);
+            }
+            else
+                managerDTO=new ManagerDTO();
 
-            Product product=Database.Products.Get(operationDTO.ProductId);
-            if (product == null)
-                throw new ValidationException("The product is not found", "");
-
-            Mapper.Initialize(cfg => cfg.CreateMap<OperationDTO, Operation>()
-                .ForMember(x=>x.Date,opt=>opt.MapFrom(item=>DateTime.Now)));
-
-            Operation operation = Mapper.Map<OperationDTO, Operation>(operationDTO);
-            //Operation operation = new Operation
-            //{
-            //    Date = DateTime.Now,
-            //    ClientId = operationDTO.ClientId,
-            //    ManagerId = operationDTO.ManagerId,
-            //    ProductId = operationDTO.ProductId,
-            //    Cost = operationDTO.Cost
-            //};
-            Database.Operations.Create(operation);
-            Database.Save();
-        }
-
-        public DTO.ManagerDTO GetManager(int? id)
-        {
-            if (id == null)
-                throw new ValidationException("The id-number of manager is not found", "");
-            var manager = Database.Managers.Get(id.Value);
-            if (manager == null)
-                throw new ValidationException("The client is not found in Database", "");
-            Mapper.Initialize(cfg => cfg.CreateMap<Manager, ManagerDTO>());
-            return Mapper.Map<Manager, ManagerDTO>(manager);
+            return managerDTO;
         }
 
         public IEnumerable<ManagerDTO> GetManagers()
@@ -69,21 +44,20 @@ namespace BusinessLogicLayer.Services
             return Mapper.Map<IEnumerable<Manager>, List<ManagerDTO>>(Database.Managers.GetAll());
         }
 
-        public IEnumerable<ManagerDTO> GetManagers(int id)
+        public ClientDTO GetClient(int id)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Manager, ManagerDTO>());
-            return Mapper.Map<IEnumerable<Manager>, List<ManagerDTO>>(Database.Managers.GetAll());
-        }
+            Client client = Database.Clients.Get(id);
+            ClientDTO clientDTO;
 
-        public DTO.ClientDTO GetClient(int? id)
-        {
-            if (id == null)
-                throw new ValidationException("The id-number of client is not found", "");
-            var client = Database.Clients.Get(id.Value);
-            if (client == null)
-                throw new ValidationException("The manager is not found in Database", "");
-            Mapper.Initialize(cfg => cfg.CreateMap<Client, ClientDTO>());
-            return Mapper.Map<Client, ClientDTO>(client);
+            if (client != null)
+            {
+                Mapper.Initialize(cfg => cfg.CreateMap<Client, ClientDTO>());
+                clientDTO = Mapper.Map<Client, ClientDTO>(client);
+            }
+            else
+                clientDTO = new ClientDTO();
+
+            return clientDTO;
         }
 
         public IEnumerable<ClientDTO> GetClients()
@@ -92,15 +66,20 @@ namespace BusinessLogicLayer.Services
             return Mapper.Map<IEnumerable<Client>, List<ClientDTO>>(Database.Clients.GetAll());
         }
 
-        public DTO.ProductDTO GetProduct(int? id)
+        public ProductDTO GetProduct(int id)
         {
-            if (id == null)
-                throw new ValidationException("The id-number of product is not found", "");
-            var product = Database.Products.Get(id.Value);
-            if (product == null)
-                throw new ValidationException("The product is not found in Database", "");
-            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<Product, ProductDTO>(product);
+            Product product = Database.Products.Get(id);
+            ProductDTO productDTO;
+
+            if (product != null)
+            {
+                Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
+                productDTO = Mapper.Map<Product, ProductDTO>(product);
+            }
+            else
+                productDTO = new ProductDTO();
+
+            return productDTO;
         }
 
         public IEnumerable<ProductDTO> GetProducts()
@@ -109,19 +88,24 @@ namespace BusinessLogicLayer.Services
             return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(Database.Products.GetAll());
         }
 
-        public DTO.OperationDTO GetOperation(int? id)
+        public OperationDTO GetOperation(int id)
         {
-            if (id == null)
-                throw new ValidationException("The id-number of operation is not found", "");
-            var operation = Database.Operations.Get(id.Value);
-            if (operation == null)
-                throw new ValidationException("The operation is not found in Database", "");
-            Mapper.Initialize(cfg => cfg.CreateMap<Operation, OperationDTO>()
-                .ForMember(x=>x.ClientNickname, opt => opt.MapFrom(item => item.Client.Nickname))
-                .ForMember(x=>x.ManagerNickname, opt => opt.MapFrom(item => item.Manager.Nickname))
-                .ForMember(x=>x.ProductName, opt => opt.MapFrom(item => item.Product.Name))
+            Operation operation = Database.Operations.Get(id);
+            OperationDTO operationDTO;
+
+            if (operation != null)
+            {
+                Mapper.Initialize(cfg => cfg.CreateMap<Operation, OperationDTO>()
+                .ForMember(x => x.ClientNickname, opt => opt.MapFrom(item => item.Client.Nickname))
+                .ForMember(x => x.ManagerNickname, opt => opt.MapFrom(item => item.Manager.Nickname))
+                .ForMember(x => x.ProductName, opt => opt.MapFrom(item => item.Product.Name))
                 );
-            return Mapper.Map<Operation, OperationDTO>(operation);
+                operationDTO = Mapper.Map<Operation, OperationDTO>(operation);
+            }
+            else
+                operationDTO = new OperationDTO();
+
+            return operationDTO;
         }
 
         public IEnumerable<OperationDTO> GetOperations()

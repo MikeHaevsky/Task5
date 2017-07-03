@@ -54,11 +54,13 @@
     <Compile Include="DTO\OperationDTO.cs" />
     <Compile Include="DTO\ProductDTO.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
-    <Compile Include="Infrastructure\ValidationException.cs" />
+    <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\IChartsService.cs" />
+    <Compile Include="Interfaces\IEditSalesService.cs" />
     <Compile Include="Interfaces\IOperationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChartsService.cs" />
+    <Compile Include="Services\EditSalesService.cs" />
     <Compile Include="Services\OperationService.cs" />
   </ItemGroup>
   <ItemGroup>

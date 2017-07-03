@@ -89,7 +89,7 @@ namespace MVCLayer.Controllers
                 try
                 { operationDTOs = operationDTOs.Where(p => p.ManagerId == manager);}
                 catch
-                { ViewBag.Message= ViewBag.Message+"Manager with id="+manager.ToString()+" not found";}
+                { ViewBag.Message= ViewBag.Message+"ManagerList with id="+manager.ToString()+" not found";}
             }
 
             if (client != null && client != 0)
@@ -97,7 +97,7 @@ namespace MVCLayer.Controllers
                 try
                 { operationDTOs = operationDTOs.Where(p => p.ClientId == client);}
                 catch
-                { ViewBag.Message = ViewBag.Message + "|Client with id=" + client.ToString() + " not found";}
+                { ViewBag.Message = ViewBag.Message + "|ClientList with id=" + client.ToString() + " not found";}
             }
 
             if (product != null && product != 0)
@@ -105,7 +105,7 @@ namespace MVCLayer.Controllers
                 try
                 { operationDTOs = operationDTOs.Where(p => p.ProductId == product);}
                 catch
-                { ViewBag.Message = ViewBag.Message + "|Product with id=" + product.ToString() + " not found";}
+                { ViewBag.Message = ViewBag.Message + "|ProductList with id=" + product.ToString() + " not found";}
             }
 
             if (lowCost != null && highCost!=null && highCost!=0)

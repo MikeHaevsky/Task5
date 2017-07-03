@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.EF;
+using DataAccessLayer.Entities;
 using DataAccessLayer.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace DataAccessLayer.Repositories
             db = new SalesSaverDBContext(connectionString);
         }
 
-        public IRepository<Entities.Client> Clients
+        public IRepository<Client> Clients
         {
             get
             {
@@ -31,7 +32,7 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public IRepository<Entities.Manager> Managers
+        public IRepository<Manager> Managers
         {
             get
             {
@@ -41,7 +42,7 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public IRepository<Entities.Product> Products
+        public IRepository<Product> Products
         {
             get
             {
@@ -51,7 +52,7 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public IRepository<Entities.Operation> Operations
+        public IRepository<Operation> Operations
         {
             get
             {

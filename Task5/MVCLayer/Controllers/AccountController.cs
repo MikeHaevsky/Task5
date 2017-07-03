@@ -39,13 +39,13 @@ namespace MVCLayer.Controllers
             }
         }
 
-        [AllowAnonymous][HttpGet]
+        [AllowAnonymous,HttpGet]
         public ActionResult Login()
         {
             return View();
         }
 
-        [AllowAnonymous][HttpPost][ValidateAntiForgeryToken]
+        [AllowAnonymous, HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model)
         {
             await SetInitialDataAsync();
@@ -76,13 +76,13 @@ namespace MVCLayer.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [AllowAnonymous][HttpGet]
+        [AllowAnonymous, HttpGet]
         public ActionResult Register()
         {
             return View();
         }
 
-        [AllowAnonymous][HttpPost][ValidateAntiForgeryToken]
+        [AllowAnonymous, HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
             await SetInitialDataAsync();

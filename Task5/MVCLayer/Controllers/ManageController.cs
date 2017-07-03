@@ -122,8 +122,8 @@ namespace MVCLayer.Controllers
             return HttpNotFound("Error DBconnection");
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Delete(UserModel model)
+        [HttpPost, ActionName("Delete")]
+        public async Task<ActionResult> DeleteConfirmed(UserModel model)
         {
 
             Mapper.Initialize(cfg => cfg.CreateMap<UserModel, UserDTO>());

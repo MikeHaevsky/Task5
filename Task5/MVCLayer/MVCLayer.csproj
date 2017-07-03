@@ -185,6 +185,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
+    <Compile Include="Controllers\EditsalesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -192,6 +193,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChartsViewModels.cs" />
+    <Compile Include="Models\EditSalesViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\SalesViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -258,6 +260,10 @@
     <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\BootstrapMenuHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\BootstrapBreadcrumbHelperModel.cshtml" />
+    <Content Include="Views\Editsales\EditManager.cshtml" />
+    <Content Include="Views\Editsales\EditOperation.cshtml" />
+    <Content Include="Views\Editsales\EditClient.cshtml" />
+    <Content Include="Views\Editsales\EditProduct.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogicIdentityLayer\BusinessLogicIdentityLayer.csproj">

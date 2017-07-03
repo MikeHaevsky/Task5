@@ -41,11 +41,7 @@ namespace MVCLayer.Models
         [Display(Name = "Confirm password")]
         [Compare("ConfirmPassword", ErrorMessage = "The password and confirmation password doesn't match.")]
         public string ConfirmPassword { get; set; }
-
-        [Required]
         public string Address { get; set; }
-
-        [Required]
         public string Name { get; set; }
     }
 

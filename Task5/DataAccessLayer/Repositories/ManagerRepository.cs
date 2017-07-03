@@ -39,8 +39,17 @@ namespace DataAccessLayer.Repositories
         public void Update(Manager item)
         {
             Manager manager = db.Managers.FirstOrDefault(x => x.Id == item.Id);
-            if (manager == null)
-                db.Entry(item).State = EntityState.Modified;
+            if (manager != null)
+            {
+                manager.Nickname = item.Nickname;
+            //db.Managers.Attach(item);
+            //var entry = db.Entry(item);
+            //entry.Property(e => e.Nickname).IsModified = true;
+                db.Entry<Manager>(manager).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            //db.SaveChanges();
         }
 
         public void Delete(int id)
