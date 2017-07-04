@@ -60,7 +60,7 @@ namespace MVCLayer.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(CreateUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -117,7 +117,7 @@ namespace MVCLayer.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(EditUserViewModel model)
         {
             if (ModelState.IsValid)

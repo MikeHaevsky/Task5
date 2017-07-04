@@ -105,22 +105,6 @@ namespace MVCLayer.Controllers
             }
         }
 
-        //public ActionResult Operation()
-        //{
-        //    try
-        //    {
-        //        IEnumerable<OperationDTO> operationDTOs = operationService.GetOperations();
-        //        Mapper.Initialize(cfg => cfg.CreateMap<OperationDTO, OperationViewModel>());
-        //        var operations = Mapper.Map<IEnumerable<OperationDTO>, List<OperationViewModel>>(operationDTOs);
-        //        return View(operations);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ViewBag.ErrorInformation(e.ToString());
-        //        return View("Error");
-        //    }
-        //}
-
         [HttpGet]
         public ActionResult Operations(int? manager, int? client, int? product, int? lowCost, int? highCost, DateTime? date)
         {
