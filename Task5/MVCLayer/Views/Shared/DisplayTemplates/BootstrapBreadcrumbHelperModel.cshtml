@@ -12,7 +12,7 @@
         }
         else
         {
-            @Html.ActionLink(node.Description, node.Action, node.Controller, new { @class = "breadcrumb-item" });
+            @Html.ActionLink(node.Description, node.Action, new { controller=node.Controller,@class = "breadcrumb-item" });
         if (node!=Model.Last()){
             <text> &gt; </text>
             }

@@ -21,7 +21,7 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Client> GetAll()
         {
-            return db.Clients;
+            return db.Clients.ToList();
         }
 
         public Client Get(int id)

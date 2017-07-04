@@ -21,7 +21,7 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Operation> GetAll()
         {
-            return db.Operations;
+            return db.Operations.ToList();
         }
 
         public Operation Get(int id)

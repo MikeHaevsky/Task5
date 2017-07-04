@@ -30,7 +30,7 @@ namespace DataAccessLayerIdentity.Repositories
             }
             else
             {
-                throw new ArgumentException("ClientProfile not found on dbo.ClienfProfiles" )
+                throw new ArgumentException("ClientProfile not found on dbo.ClienfProfiles");
             }
         }
 

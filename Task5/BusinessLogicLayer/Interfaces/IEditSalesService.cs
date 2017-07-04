@@ -10,10 +10,10 @@ namespace BusinessLogicLayer.Interfaces
 {
     public interface IEditSalesService
     {
-        OperationDetails EditManager(ManagerDTO managerDTO);
-        OperationDetails EditClient(ClientDTO clientDTO);
-        OperationDetails EditProduct(ProductDTO productDTO);
-        OperationDetails EditOperation(OperationDTO operationDTO);
+        void EditManager(ManagerDTO managerDTO);
+        void EditClient(ClientDTO clientDTO);
+        void EditProduct(ProductDTO productDTO);
+        void EditOperation(OperationDTO operationDTO);
         void Dispose();
     }
 }

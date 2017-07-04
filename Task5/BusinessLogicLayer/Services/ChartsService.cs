@@ -24,20 +24,27 @@ namespace BusinessLogicLayer.Services
 
         public IEnumerable<ManagerDTOSumCost> GetSumCostManager()
         {
-            IEnumerable<Operation> operations = Database.Operations.GetAll();
-            IEnumerable<OperationDTO> operationDTOs = MapperBL.Mapping(operations);
-
-            IEnumerable<Manager> managers = Database.Managers.GetAll();
-            IEnumerable<ManagerDTOSumCost> managersSum = MapperBL.MappingGraph(managers);
-
-            IEnumerable<IGrouping<int,string>> managersGr= managersSum.GroupBy(x=>x.Id,y=>y.Nickname);
-
-            foreach (IGrouping<int,string> manager in managersGr)
+            try
             {
-                ManagerDTOSumCost man = managersSum.FirstOrDefault(item => item.Id == manager.Key);
-                man.SumCost = operationDTOs.Where(x => x.ManagerId==man.Id).Sum(y => y.Cost);
+                IEnumerable<Operation> operations = Database.Operations.GetAll();
+                IEnumerable<OperationDTO> operationDTOs = MapperBL.Mapping(operations);
+
+                IEnumerable<Manager> managers = Database.Managers.GetAll();
+                IEnumerable<ManagerDTOSumCost> managersSum = MapperBL.MappingGraph(managers);
+
+                IEnumerable<IGrouping<int, string>> managersGr = managersSum.GroupBy(x => x.Id, y => y.Nickname);
+
+                foreach (IGrouping<int, string> manager in managersGr)
+                {
+                    ManagerDTOSumCost man = managersSum.FirstOrDefault(item => item.Id == manager.Key);
+                    man.SumCost = operationDTOs.Where(x => x.ManagerId == man.Id).Sum(y => y.Cost);
+                }
+                return managersSum;
             }
-            return managersSum;
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.ToString());
+            }
         }
 
         public void Dispose()

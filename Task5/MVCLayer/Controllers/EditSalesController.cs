@@ -26,7 +26,7 @@ namespace MVCLayer.Controllers
         [HttpGet]
         public ActionResult EditManager(int? id)
         {
-            if (id != null)
+            try
             {
                 EditManagerViewModel model;
                 ManagerDTO managerDTO = operationService.GetManager(id.Value);
@@ -37,13 +37,13 @@ namespace MVCLayer.Controllers
 
                     return View(model);
                 }
-                else
-                {
-                    model = new EditManagerViewModel { Nickname = "Not found" };
-                }
-                return View(model);
+                throw new ArgumentException("Manager not found.");
             }
-            return View();
+            catch(Exception e)
+            {
+                ViewBag.ErrorInformation=e.Message;
+                return View("Error");
+            }
         }
 
         [HttpPost,ValidateAntiForgeryToken]
@@ -51,17 +51,19 @@ namespace MVCLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Mapper.Initialize(opt => opt.CreateMap<EditManagerViewModel, ManagerDTO>());
-                ManagerDTO managerDTO = Mapper.Map<EditManagerViewModel, ManagerDTO>(model);
-
-                OperationDetails operationDetails = editSalesService.EditManager(managerDTO);
-
-                if (operationDetails.Succedeed)
+                try
                 {
+                    Mapper.Initialize(opt => opt.CreateMap<EditManagerViewModel, ManagerDTO>());
+                    ManagerDTO managerDTO = Mapper.Map<EditManagerViewModel, ManagerDTO>(model);
+                    editSalesService.EditManager(managerDTO);
+
                     return RedirectToAction("Managers", "Home");
                 }
-                else
-                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                catch(Exception e)
+                {
+                    ViewBag.ErrorInformation = e.Message;
+                    return View("Error");
+                }
             }
             return View(model);
         }
@@ -69,7 +71,7 @@ namespace MVCLayer.Controllers
         [HttpGet]
         public ActionResult EditClient(int? id)
         {
-            if (id == null)
+            try
             {
                 EditClientViewModel model;
                 ClientDTO clientDTO = operationService.GetClient(id.Value);
@@ -80,13 +82,13 @@ namespace MVCLayer.Controllers
 
                     return View(model);
                 }
-                else
-                {
-                    model = new EditClientViewModel { Nickname = "Not found" };
-                }
-                return View(model);
+                throw new ArgumentException("Client not found.");
             }
-            return View();
+            catch (Exception e)
+            {
+                ViewBag.ErrorInformation = e.Message;
+                return View("Error");
+            }
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -94,17 +96,19 @@ namespace MVCLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Mapper.Initialize(opt => opt.CreateMap<EditClientViewModel, ClientDTO>());
-                ClientDTO clientDTO = Mapper.Map<EditClientViewModel, ClientDTO>(model);
-
-                OperationDetails operationDetails = editSalesService.EditClient(clientDTO);
-
-                if (operationDetails.Succedeed)
+                try
                 {
+                    Mapper.Initialize(opt => opt.CreateMap<EditClientViewModel, ClientDTO>());
+                    ClientDTO clientDTO = Mapper.Map<EditClientViewModel, ClientDTO>(model);
+                    editSalesService.EditClient(clientDTO);
+
                     return RedirectToAction("Clients", "Home");
                 }
-                else
-                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                catch (Exception e)
+                {
+                    ViewBag.ErrorInformation = e.Message;
+                    return View("Error");
+                }
             }
             return View(model);
         }
@@ -112,7 +116,7 @@ namespace MVCLayer.Controllers
         [HttpGet]
         public ActionResult EditProduct(int? id)
         {
-            if (id != null)
+            try
             {
                 EditProductViewModel model;
                 ProductDTO productDTO = operationService.GetProduct(id.Value);
@@ -123,13 +127,13 @@ namespace MVCLayer.Controllers
 
                     return View(model);
                 }
-                else
-                {
-                    model = new EditProductViewModel { Name = "Not found" };
-                }
-                return View(model);
+                throw new ArgumentException("Product not found.");
             }
-            return View();
+            catch (Exception e)
+            {
+                ViewBag.ErrorInformation = e.Message;
+                return View("Error");
+            }
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -137,17 +141,19 @@ namespace MVCLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Mapper.Initialize(opt => opt.CreateMap<EditProductViewModel, ProductDTO>());
-                ProductDTO productDTO = Mapper.Map<EditProductViewModel, ProductDTO>(model);
-
-                OperationDetails operationDetails = editSalesService.EditProduct(productDTO);
-
-                if (operationDetails.Succedeed)
+                try
                 {
+                    Mapper.Initialize(opt => opt.CreateMap<EditProductViewModel, ProductDTO>());
+                    ProductDTO productDTO = Mapper.Map<EditProductViewModel, ProductDTO>(model);
+                    editSalesService.EditProduct(productDTO);
+
                     return RedirectToAction("Products", "Home");
                 }
-                else
-                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                catch (Exception e)
+                {
+                    ViewBag.ErrorInformation = e.Message;
+                    return View("Error");
+                }
             }
             return View(model);
         }
@@ -155,7 +161,7 @@ namespace MVCLayer.Controllers
         [HttpGet]
         public ActionResult EditOperation(int? id)
         {
-            if (id != null)
+            try
             {
                 EditOperationViewModel model;
                 OperationDTO operationDTO = operationService.GetOperation(id.Value);
@@ -175,13 +181,13 @@ namespace MVCLayer.Controllers
 
                     return View(model);
                 }
-                else
-                {
-                    model = new EditOperationViewModel { NotFound = true };
-                }
-                return View(model);
+                throw new ArgumentException("Operation not found.");
             }
-            return View();
+            catch (Exception e)
+            {
+                ViewBag.ErrorInformation = e.Message;
+                return View("Error");
+            }
         }
 
         [HttpPost, ValidateAntiForgeryToken]
@@ -189,19 +195,21 @@ namespace MVCLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Mapper.Initialize(opt => opt.CreateMap<EditOperationViewModel, OperationDTO>());
-                OperationDTO operationDTO = Mapper.Map<EditOperationViewModel, OperationDTO>(model);
-
-                OperationDetails operationDetails = editSalesService.EditOperation(operationDTO);
-
-                if (operationDetails.Succedeed)
+                try
                 {
+                    Mapper.Initialize(opt => opt.CreateMap<EditOperationViewModel, OperationDTO>());
+                    OperationDTO operationDTO = Mapper.Map<EditOperationViewModel, OperationDTO>(model);
+                    editSalesService.EditOperation(operationDTO);
+
                     return RedirectToAction("Operations", "Home");
                 }
-                else
-                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                catch (Exception e)
+                {
+                    ViewBag.ErrorInformation = e.Message;
+                    return View("Error");
+                }
             }
             return View(model);
         }
-	}
+    }
 }

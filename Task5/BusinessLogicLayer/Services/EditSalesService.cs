@@ -21,81 +21,104 @@ namespace BusinessLogicLayer.Services
             Database = uow;
         }
 
-        public OperationDetails EditManager(ManagerDTO managerDTO)
+        public void EditManager(ManagerDTO managerDTO)
         {
-            Manager manager = Database.Managers.Get(managerDTO.Id);
-            if (manager != null)
+            try
             {
-                manager.Nickname = managerDTO.Nickname;
+                Manager manager = Database.Managers.Get(managerDTO.Id);
+                if (manager != null)
+                {
+                    manager.Nickname = managerDTO.Nickname;
 
-                Database.Managers.Update(manager);
-                Database.Save();
-                return new OperationDetails(true, "Update manager success", "");
+                    Database.Managers.Update(manager);
+                    Database.SaveAsync();
+                }
+                else
+                    throw new ArgumentException("Manager is not edit.");
             }
-            else
-                return new OperationDetails(false, "Update manager unsuccess", "");
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.ToString());
+            }
         }
 
-        public OperationDetails EditClient(ClientDTO clientDTO)
+        public void EditClient(ClientDTO clientDTO)
         {
-            Client client = Database.Clients.Get(clientDTO.Id);
-            if (client != null)
+            try
             {
-                client.Nickname = clientDTO.Nickname;
+                Client client = Database.Clients.Get(clientDTO.Id);
+                if (client != null)
+                {
+                    client.Nickname = clientDTO.Nickname;
 
-                Database.Clients.Update(client);
-                Database.Save();
-                return new OperationDetails(true, "Update client success", "");
+                    Database.Clients.Update(client);
+                    Database.SaveAsync();
+                }
+                else
+                    throw new ArgumentException("Client is not edit.");
             }
-            else
-                return new OperationDetails(false,"Update client UNsuccess","");
+            catch(Exception e)
+            {
+                throw new ArgumentException(e.ToString());
+            }
         }
 
-        public OperationDetails EditProduct(ProductDTO productDTO)
+        public void EditProduct(ProductDTO productDTO)
         {
-            Product product = Database.Products.Get(productDTO.Id);
-            if (product != null)
+            try
             {
-                product.Name=productDTO.Name;
+                Product product = Database.Products.Get(productDTO.Id);
+                if (product != null)
+                {
+                    product.Name = productDTO.Name;
 
-                Database.Products.Update(product);
-                Database.Save();
-                return new OperationDetails(true, "Update product success", "");
+                    Database.Products.Update(product);
+                    Database.SaveAsync();
+                }
+                else
+                    throw new ArgumentException("Product is not edit.");
             }
-            else
-                return new OperationDetails(false,"Product is not exist on DB", "");
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.ToString());
+            }
         }
 
-        public OperationDetails EditOperation(OperationDTO operationDTO)
+        public void EditOperation(OperationDTO operationDTO)
         {
-            OperationDetails operationDetails;
-            Client client = Database.Clients.Get(operationDTO.ClientId);
-            if (client == null)
-                return operationDetails = new OperationDetails(false,"/The client is not found/","");
-
-            Manager manager = Database.Managers.Get(operationDTO.ManagerId);
-            if (manager == null)
-                return operationDetails = new OperationDetails(false, "/The manager is not found/", "");
-
-            Product product=Database.Products.Get(operationDTO.ProductId);
-            if (product == null)
-                return operationDetails = new OperationDetails(false, "/The product is not found/", "");
-
-            Operation operation = Database.Operations.Get(operationDTO.Id);
-            if (operation != null)
+            try
             {
-                operation.ClientId = operationDTO.ClientId;
-                operation.ManagerId = operationDTO.ManagerId;
-                operation.ProductId = operationDTO.ProductId;
-                operation.Date = operationDTO.Date;
-                operation.Cost = operationDTO.Cost;
+                Client client = Database.Clients.Get(operationDTO.ClientId);
+                if (client == null)
+                    throw new ArgumentException("Client not found.");
 
-                Database.Operations.Update(operation);
-                Database.Save();
-                return operationDetails = new OperationDetails(true, "Update operation success", "");
+                Manager manager = Database.Managers.Get(operationDTO.ManagerId);
+                if (manager == null)
+                    throw new ArgumentException("Manager not found.");
+
+                Product product = Database.Products.Get(operationDTO.ProductId);
+                if (product == null)
+                    throw new ArgumentException("Product not found.");
+
+                Operation operation = Database.Operations.Get(operationDTO.Id);
+                if (operation != null)
+                {
+                    operation.ClientId = operationDTO.ClientId;
+                    operation.ManagerId = operationDTO.ManagerId;
+                    operation.ProductId = operationDTO.ProductId;
+                    operation.Date = operationDTO.Date;
+                    operation.Cost = operationDTO.Cost;
+
+                    Database.Operations.Update(operation);
+                    Database.SaveAsync();
+                }
+                else
+                    throw new ArgumentException("Operation not found.");
             }
-            else
-                return operationDetails = new OperationDetails(false, "Update operation UNsuccess", "");
+            catch (Exception e)
+            {
+                throw new ArgumentException(e.ToString());
+            }
         }
         public void Dispose()
         {

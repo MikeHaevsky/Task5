@@ -42,10 +42,22 @@ namespace MVCLayer.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            SelectList rolesList = new SelectList(UserService.GetRoles());
-            CreateUserViewModel model = new CreateUserViewModel { Roles = rolesList };
-
-            return View(model);
+            try
+            {
+                SelectList rolesList = new SelectList(UserService.GetRoles());
+                if (rolesList != null)
+                {
+                    CreateUserViewModel model = new CreateUserViewModel { Roles = rolesList };
+                    return View(model);
+                }
+                else
+                    throw new ArgumentException("Role list not found.");
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorInformation = e.Message;
+                return View("Error");
+            }
         }
 
         [HttpPost]
@@ -53,21 +65,29 @@ namespace MVCLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<CreateUserViewModel, UserDTO>());
-                UserDTO userDTO = Mapper.Map<CreateUserViewModel, UserDTO>(model);
-
-                if (userDTO.Role == null)
+                try
                 {
-                    userDTO.Role = "user";
-                }
+                    Mapper.Initialize(cfg => cfg.CreateMap<CreateUserViewModel, UserDTO>());
+                    UserDTO userDTO = Mapper.Map<CreateUserViewModel, UserDTO>(model);
 
-                OperationDetails operationDetails = await UserService.Create(userDTO);
-                if (operationDetails.Succedeed)
-                {
-                    return RedirectToAction("GetAccounts", "Account");
+                    if (userDTO.Role == null)
+                    {
+                        userDTO.Role = "user";
+                    }
+
+                    OperationDetails operationDetails = await UserService.Create(userDTO);
+                    if (operationDetails.Succedeed)
+                    {
+                        return RedirectToAction("GetAccounts", "Account");
+                    }
+                    else
+                        throw new ArgumentException("Account not created.");
                 }
-                else
-                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                catch (Exception e)
+                {
+                    ViewBag.ErrorInformation = e.Message;
+                    return View("Error");
+                }
             }
             return View(model);
         }
@@ -75,18 +95,26 @@ namespace MVCLayer.Controllers
         [HttpGet]
         public async Task<ActionResult> Edit(string id)
         {
-            UserDTO userDTO = await UserService.GetUser(id);
-            if (userDTO != null)
+            try
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, EditUserViewModel>()
-                    .ForMember(x => x.Roles, opt => opt.Ignore()));
-                EditUserViewModel editModel = Mapper.Map<UserDTO, EditUserViewModel>(userDTO);
-                //колхоз
-                editModel.Roles = new SelectList(UserService.GetRoles());
+                UserDTO userDTO = await UserService.GetUser(id);
+                if (userDTO != null)
+                {
+                    Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, EditUserViewModel>()
+                        .ForMember(x => x.Roles, opt => opt.Ignore()));
+                    EditUserViewModel editModel = Mapper.Map<UserDTO, EditUserViewModel>(userDTO);
+                    editModel.Roles = new SelectList(UserService.GetRoles());
 
-                return View(editModel);
+                    return View(editModel);
+                }
+                else
+                    throw new ArgumentException("User not found.");
             }
-            return HttpNotFound("Error DBconnection");
+            catch (Exception e)
+            {
+                ViewBag.ErrorInformation = e.Message;
+                return View("Error");
+            }
         }
 
         [HttpPost]
@@ -94,16 +122,24 @@ namespace MVCLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<EditUserViewModel, UserDTO>());
-                UserDTO userDTO = Mapper.Map<EditUserViewModel, UserDTO>(model);
-
-                OperationDetails operationDetails = await UserService.Edit(userDTO);
-                if (operationDetails.Succedeed)
+                try
                 {
-                    return RedirectToAction("GetAccounts", "Account");
+                    Mapper.Initialize(cfg => cfg.CreateMap<EditUserViewModel, UserDTO>());
+                    UserDTO userDTO = Mapper.Map<EditUserViewModel, UserDTO>(model);
+
+                    OperationDetails operationDetails = await UserService.Edit(userDTO);
+                    if (operationDetails.Succedeed)
+                    {
+                        return RedirectToAction("GetAccounts", "Account");
+                    }
+                    else
+                        throw new ArgumentException("Account not saved.");
                 }
-                else
-                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                catch (Exception e)
+                {
+                    ViewBag.ErrorInformation = e.Message;
+                    return View("Error");
+                }
             }
             return View(model);
         }
@@ -111,32 +147,47 @@ namespace MVCLayer.Controllers
         [HttpGet]
         public async Task<ActionResult> Delete(string id)
         {
-            UserDTO userDTO = await UserService.GetUser(id);
-            if (userDTO != null)
+            try
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, UserModel>());
-                UserModel editedModel = Mapper.Map<UserDTO, UserModel>(userDTO);
+                UserDTO userDTO = await UserService.GetUser(id);
+                if (userDTO != null)
+                {
+                    Mapper.Initialize(cfg => cfg.CreateMap<UserDTO, UserModel>());
+                    UserModel editedModel = Mapper.Map<UserDTO, UserModel>(userDTO);
 
-                return View(editedModel);
+                    return View(editedModel);
+                }
+                else
+                    throw new ArgumentException("User not found.");
             }
-            return HttpNotFound("Error DBconnection");
+            catch (Exception e)
+            {
+                ViewBag.ErrorInformation = e.Message;
+                return View("Error");
+            }
         }
 
         [HttpPost, ActionName("Delete")]
         public async Task<ActionResult> DeleteConfirmed(UserModel model)
         {
-
-            Mapper.Initialize(cfg => cfg.CreateMap<UserModel, UserDTO>());
-            UserDTO userDTO = Mapper.Map<UserModel, UserDTO>(model);
-
-            OperationDetails operationDetails = await UserService.Delete(userDTO);
-            if (operationDetails.Succedeed)
+            try
             {
-                return RedirectToAction("GetAccounts", "Account");
+                Mapper.Initialize(cfg => cfg.CreateMap<UserModel, UserDTO>());
+                UserDTO userDTO = Mapper.Map<UserModel, UserDTO>(model);
+
+                OperationDetails operationDetails = await UserService.Delete(userDTO);
+                if (operationDetails.Succedeed)
+                {
+                    return RedirectToAction("GetAccounts", "Account");
+                }
+                else
+                    throw new ArgumentException("Client not deleted.");
             }
-            else
-                ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
-            return View(model);
+            catch (Exception e)
+            {
+                ViewBag.ErrorInformation = e.Message;
+                return View("Error");
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ namespace BusinessLogicLayer.Services
             }
             catch (Exception e)
             {
-                throw new ArgumentException("/Manager not found in table db.Managers/\n" + e.ToString());
+                throw new ArgumentException("GetManager error." + e.ToString());
             }
         }
 
@@ -46,7 +46,7 @@ namespace BusinessLogicLayer.Services
             }
             catch(Exception e)
             {
-                throw new ArgumentException("/No elements were sought in db.Managers table/\n" + e.ToString());
+                throw new ArgumentException("GetManagers error." + e.ToString());
             }
         }
 
@@ -59,7 +59,7 @@ namespace BusinessLogicLayer.Services
             }
             catch (Exception e)
             {
-                throw new ArgumentException("/Client not found on table db.Managers/\n" + e.ToString());
+                throw new ArgumentException("GetClient error." + e.ToString());
             }
         }
 
@@ -85,7 +85,7 @@ namespace BusinessLogicLayer.Services
             }
             catch (Exception e)
             {
-                throw new ArgumentException("/Product not found on table db.Managers/\n" + e.ToString());
+                throw new ArgumentException("GeProduct error." + e.ToString());
             }
         }
 
@@ -98,7 +98,7 @@ namespace BusinessLogicLayer.Services
             }
             catch (Exception e)
             {
-                throw new ArgumentException("/No elements were sought in db.Products table/\n" + e.ToString());
+                throw new ArgumentException("GetProducts error." + e.ToString());
             }
         }
 
@@ -111,7 +111,7 @@ namespace BusinessLogicLayer.Services
             }
             catch (Exception e)
             {
-                throw new ArgumentException("/Operation not found on table db.Managers/\n" + e.ToString());
+                throw new ArgumentException("GetOperation error." + e.ToString());
             }
             
         }
@@ -125,7 +125,7 @@ namespace BusinessLogicLayer.Services
             }
             catch (Exception e)
             {
-                throw new ArgumentException("/No elements were sought in db.Operations table/\n" + e.ToString());
+                throw new ArgumentException("GetOperations error." + e.ToString());
             }
         }
 

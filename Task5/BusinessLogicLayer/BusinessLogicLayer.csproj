@@ -54,7 +54,6 @@
     <Compile Include="DTO\OperationDTO.cs" />
     <Compile Include="DTO\ProductDTO.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
-    <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Interfaces\IChartsService.cs" />
     <Compile Include="Interfaces\IEditSalesService.cs" />
     <Compile Include="Interfaces\IOperationService.cs" />

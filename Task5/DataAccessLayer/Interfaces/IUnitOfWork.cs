@@ -13,6 +13,6 @@ namespace DataAccessLayer.Interfaces
         IRepository<Manager> Managers { get; }
         IRepository<Product> Products { get; }
         IRepository<Operation> Operations { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

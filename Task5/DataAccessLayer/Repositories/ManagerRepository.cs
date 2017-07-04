@@ -21,7 +21,7 @@ namespace DataAccessLayer.Repositories
 
         public IEnumerable<Manager> GetAll()
         {
-            return db.Managers;
+            return db.Managers.ToList();
         }
 
         public Manager Get(int id)
