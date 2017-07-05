@@ -23,21 +23,7 @@
         <p></p>
         <input type="date" class="form-control" id="date" name="date" />
         <input type="submit" value="Filter" class="btn btn-default" />
-        <input type="button" value="Skip filters" onchange="SkipFilters" class="btn-danger" />
-        <script type="text/javascript">
-            function SkipFilters() {
-                //document.getElementById("p1").innerHTML = "Новый текст!";
-                //document.getElementById("manager")[0].;
-                var managerList = document.getElementById("manager");
-                managerList.valueOf = 0;
-
-                var clientList = document.getElementById("client");
-                var productList = document.getElementById("product");
-                var lCost = document.getElementById("lowCost").v;
-                var hCost = document.getElementById("highCost");
-                
-            }
-        </script>
+        <input type="button" value="Skip filters" onclick="skipFilters()" class="btn-danger" />
     </div>
 </form>
 
@@ -84,3 +70,24 @@
     </b>
 </h4>
 
+<script type="text/javascript">
+    function skipFilters() {
+        document.getElementById('manager').getElementsByTagName('option')[0].selected = 'selected';
+        document.getElementById('client').getElementsByTagName('option')[0].selected = 'selected';
+        document.getElementById('product').getElementsByTagName('option')[0].selected = 'selected';
+        document.getElementById('lowCost').value = '';
+        document.getElementById('highCost').value = '';
+        document.querySelector('input[type="date"]').value = '';
+    }
+</script>
+@*<script type="text/javascript">
+    function skipFilters() {
+        $(function () {
+            $("manager").val("All"),
+            $(function () {
+                $('client').val('All');
+
+            })
+        })
+    }
+</script>*@
